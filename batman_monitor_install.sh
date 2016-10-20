@@ -20,9 +20,9 @@ export batman_version='4'
 
 # Batman-adv mesh ethenet cable interface, IPv4 address and gateway address
 export batman_iface='eth1'
-export batman_iface_ip='10.61.33.1'
+export batman_iface_ip='10.61.34.1'
 export batman_iface_mask='255.255.255.0'
-export gateway_ip='10.61.33.254'
+export gateway_ip='10.61.34.254'
 
 # Observium database credentials
 export mysql_root_user='observium'
@@ -39,11 +39,11 @@ export eth0_netmask='255.255.255.0'
 export eth0_gateway='172.20.100.254'
 
 # Inject management station's public key
-cd /home/ubuntu && /bin/mkdir --mode=700 .ssh && /bin/chown ubuntu:ubuntu .ssh
+cd /home/$USER && /bin/mkdir --mode=700 .ssh && /bin/chown $USER:$USER .ssh
 /bin/cat >> .ssh/authorized_keys << "PUBLIC_KEY"
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhIJhNUQ7vEUtu7AM6DtcLpgOgP2IK9LrwcpSGfRjMCrPZnCp2LzBO7TCoxnAoRfVQFgpygBG1cWPCffG0VT8zcf9KMyWLDBt+LpCndsP3MsIqpnL+wxOl2JanMufoYjAKH7qCpIDgt4J92grreXhQMjHjwrFjtt718X09fYnMlIA+g7lKt6lNeTg8E3QhQzqWvmwdGKSVft9PCmrQbwXf0nPSpKNdBM6kaprs+IqTUBvCsVvx4j8p6KKGm5oPWk9B39NEedPFChDvSbZn2wr6Ww/nV08UKeHB4SFw3/rWUocXeLcLIowE2LdpVxPX9c0yNoXLgKVkeQHNuicsVDe/ alvinho@alvinho.deped-corp.dgen
 PUBLIC_KEY
-/bin/chmod 600 .ssh/authorized_keys && /bin/chown ubuntu:ubuntu .ssh/authorized_keys
+/bin/chmod 600 .ssh/authorized_keys && /bin/chown $USER:$USER .ssh/authorized_keys
 
 # Update Ubuntu
 sudo apt-get update
@@ -82,7 +82,7 @@ cd ../alfred && make LIBCAP_CFLAGS='' LIBCAP_LDLIBS='-lcap' && sudo make LIBCAP_
 echo 'batman-adv' | sudo tee --append /etc/modules
 
 # Install Java Graphviz Renderer Engine
-cd /home/ubuntu
+cd /home/$USER
 git clone https://github.com/omerio/graphviz-server
 
 # System-V init script to autostart Batman-adv, ALFRED and Graphviz Server
@@ -117,7 +117,7 @@ case "$1" in
     echo "bat0 interface activated"
     /sbin/ip addr add batman_iface_ip/batman_iface_mask dev bat0
     echo "Starting Graphviz Renderer Engine Server"
-    cd /home/ubuntu/graphviz-server/dist/
+    cd /home/$USER/graphviz-server/dist/
     ./DotGraphics.sh
     echo "Starting ALFRED in SLAVE mode, allow some time for batman to settle down before alfred"
     /bin/sleep 10
@@ -359,6 +359,6 @@ sudo sed -i "s/batman_iface/$batman_iface/" /etc/network/interfaces
 cd /opt/observium && ./discovery.php -h all && ./poller.php -h all
 
 # Restore default rc.local
-cp -f /home/ubuntu/rc.local /etc/rc.local
+cp -f /home/$USER/rc.local /etc/rc.local
 
 reboot

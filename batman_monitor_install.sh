@@ -350,11 +350,11 @@ sudo sed -i "s/gateway_ip/$gateway_ip/" /etc/dhcp/dhclient.conf
 sudo resolvconf -u
 
 # Enable eth1 as mesh interface
-sudo bash -c 'cat >> /etc/network/interfaces << "END"
-auto batman_iface
-iface batman_iface inet manual
-END'
-sudo sed -i "s/batman_iface/$batman_iface/" /etc/network/interfaces
+#sudo bash -c 'cat >> /etc/network/interfaces << "END"
+#auto batman_iface
+#iface batman_iface inet manual
+#END'
+#sudo sed -i "s/batman_iface/$batman_iface/" /etc/network/interfaces
 
 # Start Observium discovery and poller
 cd /opt/observium && ./discovery.php -h all && ./poller.php -h all

@@ -19,7 +19,13 @@
 export batman_version='4'
 
 # Batman-adv mesh ethenet cable interface, IPv4 address and gateway address
-export batman_iface='eth1'
+echo "Selecione qual interface de rede será conectada na porta 4 do gateway?"
+echo "Essa interface é dedicada para comunicação via protocolo batman-adv para monitoração"
+echo "Não deve ser a mesma utilizada para acessar a internet"
+cd /sys/class/net && select batman_iface in *
+	do echo $batman_iface selected; break
+done
+# Batman-adv mesh ethenet cable interface, IPv4 address and gateway address
 export batman_iface_ip='10.61.34.1'
 export batman_iface_mask='255.255.255.0'
 export gateway_ip='10.61.34.254'
@@ -32,11 +38,6 @@ export observium_db_pwd='observium'
 # Node base geolocation
 export gps_longitude='-46.6573279'
 export gps_latitude='-23.5632479'
-
-# Eth0 IPv4 address, management interface
-export eth0_ip='172.20.100.56'
-export eth0_netmask='255.255.255.0'
-export eth0_gateway='172.20.100.254'
 
 # Inject management station's public key
 cd /home/$USER && /bin/mkdir --mode=700 .ssh && /bin/chown $USER:$USER .ssh
@@ -350,11 +351,11 @@ sudo sed -i "s/gateway_ip/$gateway_ip/" /etc/dhcp/dhclient.conf
 sudo resolvconf -u
 
 # Enable eth1 as mesh interface
-sudo bash -c 'cat >> /etc/network/interfaces << "END"
-auto batman_iface
-iface batman_iface inet manual
-END'
-sudo sed -i "s/batman_iface/$batman_iface/" /etc/network/interfaces
+#sudo bash -c 'cat >> /etc/network/interfaces << "END"
+#auto batman_iface
+#iface batman_iface inet manual
+#END'
+#sudo sed -i "s/batman_iface/$batman_iface/" /etc/network/interfaces
 
 # Start Observium discovery and poller
 cd /opt/observium && ./discovery.php -h all && ./poller.php -h all

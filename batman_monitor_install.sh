@@ -117,7 +117,7 @@ case "$1" in
     echo "bat0 interface activated"
     /sbin/ip addr add batman_iface_ip/batman_iface_mask dev bat0
     echo "Starting Graphviz Renderer Engine Server"
-    cd /home/$USER/graphviz-server/dist/
+    cd /home/USER/graphviz-server/dist/
     ./DotGraphics.sh
     echo "Starting ALFRED in SLAVE mode, allow some time for batman to settle down before alfred"
     /bin/sleep 10
@@ -139,6 +139,7 @@ exit 0
 END_MESH'
 
 # Substitute afterwards for real variables
+sudo sed -i "s/USER/$USER/" /etc/init.d/start_mesh
 sudo sed -i "s/batman_iface_ip/$batman_iface_ip/" /etc/init.d/start_mesh
 sudo sed -i "s/batman_iface_mask/$batman_iface_mask/" /etc/init.d/start_mesh
 sudo sed -i "s/batman_iface/$batman_iface/" /etc/init.d/start_mesh
